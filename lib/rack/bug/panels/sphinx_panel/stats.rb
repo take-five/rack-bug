@@ -4,11 +4,13 @@ module Rack
 
       class Stats
         class Query
+          include Rack::Bug::FilteredBacktrace
+
           attr_reader :time
           attr_reader :command
 
           def initialize(time, *command_args)
-            @time = time
+            @time, @backtrace = time, caller
             if command_args.flatten.first == :search
               @command = "search: " + decode_message(command_args.first.flatten.last).collect{|k,v| "#{k} => #{v}"}.join(", ")
             else
@@ -74,7 +76,6 @@ module Rack
         end
 
         def record_call(time, *command_args)
-
           @queries << Query.new(time, command_args)
           @calls += 1
           @time += time

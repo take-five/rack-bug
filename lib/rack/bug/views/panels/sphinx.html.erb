@@ -25,6 +25,25 @@
           <td><%= query.display_time %></td>
           <td><%= query.command %></td>
         </tr>
+
+          <tr>
+            <td></td>
+            <td>
+              <div class="opts">
+                <%  if query.has_backtrace? %>
+                  <a href="#" class="reveal_backtrace">Show Backtrace</a>
+                <% end %>
+              </div>
+
+              <% if query.has_backtrace? %>
+                <ul style="display:none" class='backtrace'>
+                  <% query.filtered_backtrace.each do |line| %>
+                    <li><%=h line %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </td>
+          </tr>
         <% i += 1 %>
       <% end %>
     </tbody>
