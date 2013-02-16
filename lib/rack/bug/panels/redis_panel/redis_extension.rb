@@ -14,9 +14,9 @@ if defined?(Redis)
     elsif defined?(Redis::Client) # newer versions of redis-rb
 
       Redis::Client.class_eval do
-        def call_with_rack_bug(*argv)
+        def call_with_rack_bug(*argv, &block)
           Rack::Bug::RedisPanel.record(argv, Kernel.caller) do
-            call_without_rack_bug(*argv)
+            call_without_rack_bug(*argv, &block)
           end
         end
 
